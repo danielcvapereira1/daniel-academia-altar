@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Book Tinder</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+    
+ </head>   
+
+<!--- Exemplo comentario -->
+
+
+<body>
+
+    <h1 id="heading1">Selecione o seu livro favorito</h1>
+    <div class="container-fluid" >
+             <div id="startOfPage" class="row active">
+                <button type="button" class="começar">Começar</button>
+            </div>
+            <br>
+
+            <div id="mainPage">
+                <div class="row" id="bookContainer">
+
+                    <div class="book col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2">
+                    <img src="" alt="" class="img-thumbnail">
+                    <h1 id="title"></h1>
+                    <p id="descricao"></p>
+                    
+                    <br>
+                    <a href="" class="wikipedia">Wikipedia</a>
+                    <a href="" class="foursquare">Foursquare</a>
+                    <br>
+                    <a href="" class="zomato">Zomato</a>
+                    <a href="" class="amazon">Amazon</a>
+                    
+                    </div>
+
+                </div>  
+                <br>
+                <button id="buttonDislike" type="button" data-Opinion="dislike" class="btn-danger buttonNaoGosto">Não Gosto</button>
+                <button id="buttonLike" type="button" data-Opinion="like" class="btn-success buttonGosto">Gosto</button> 
+            </div>
+
+            <div id="endOfPage">
+                <p style="font-size:30px">Obrigado pelas suas escolhas.</p><br>
+                <p style="font-size:30px">Estas foram as suas opiniões.</p>
+                <br>
+                <table id="tblResults">
+                    <thead>
+                        <tr>
+                            <th>Book</th>
+                            <th>Cover</th>
+                            <th>Likes</th>
+                            <th>Dislikes</th>   
+                        </tr>
+                    </thead>
+                    <tbody>
+                    
+
+                    </tbody>    
+
+                </table>
+
+                <br>
+                <label>Total de Likes: </label>
+                <label id="LikesID2"></label><br>
+                <label>Total de Dislikes: </label>
+                <label id="DislikesID"></label>
+            </div>   
+    </div>
+    
+ <br>       
+<!-- <label id="LikesID"></label>
+<label id="stringID">Likes</label>  
+<button type='button' class="resetbutton">Reset</button> -->
+
+
+<script type="text/javascript" src="jquery-3.2.1.js"></script>
+<script type="text/javascript" src="addlikes.js"></script>
+
+</body>
+</html>

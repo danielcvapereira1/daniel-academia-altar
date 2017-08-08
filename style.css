@@ -1,0 +1,41 @@
+#startOfPage{
+    align-content: center;
+}
+#endOfPage{
+    display:none;
+    align-content: center;
+}
+
+.book{
+    display: none;
+}
+body{
+    background-color:bisque;
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+.book img{
+    width: 250px;
+    margin: center;
+}
+a:visited{
+    color:darkblue;
+}
+.active{
+    display:block;
+}
+table{
+    align-content: center;
+    margin: 0 auto;
+}
+tr, th, td{
+    border: 2px solid black;
+    padding: 15px; 
+}
+#buttonDislike{
+    display: none;
+}
+#buttonLike{
+    display: none;
+}
