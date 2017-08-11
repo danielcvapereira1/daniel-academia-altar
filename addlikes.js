@@ -18,7 +18,7 @@ function Library(){                                  //Class created
         //this.books.push(book);
         this.books.enqueue(book);  
     }
-    this.index=1;                                   //Attribute or property created
+    this.index=0;                                   //Attribute or property created
     this.nextBook = function(){
         var book = this.books.data[0]
         this.books.dequeue();
@@ -46,6 +46,7 @@ function Book(title,descricao,image,links){
         $("#title").html(this.title).fadeIn(500);
         $("#descricao").html(this.descricao).fadeIn(500);
         $(".img-thumbnail").attr("src",this.image).fadeIn(500);
+        $(".infolink").attr("href",this.links);
         $(".wikipedia").attr("href",this.links.wikipedia);
         $(".foursquare").attr("href",this.links.foursquare);
         $(".zomato").attr("href",this.links.zomato);
@@ -56,29 +57,31 @@ function Book(title,descricao,image,links){
 var library = new Library(); //Instance calling (begins to exist)
 
                        
-var book1 = new Book("1984","Nineteen Eighty-Four, often published as 1984, is a dystopian novel published in 1949 by English author George Orwell.","imgs/book1.jpeg",{wikipedia:"http://www.wikipedia.pt",foursquare:"http://www.foursquare.com",
-            zomato:"http://www.zomato.com/portugal", amazon:"http://www.amazon.com"});
+// var book1 = new Book("1984","Nineteen Eighty-Four, often published as 1984, is a dystopian novel published in 1949 by English author George Orwell.","imgs/book1.jpeg",{wikipedia:"http://www.wikipedia.pt",foursquare:"http://www.foursquare.com",
+//             zomato:"http://www.zomato.com/portugal", amazon:"http://www.amazon.com"});
 
-var book2 = new Book("A jangada de pedra","A Jangada de Pedra é um romance de José Saramago. Conta a história ficcional da separação geográfica da Península Ibérica do restante continente europeu.","imgs/book2.jpeg",{wikipedia:"http://www.wikipedia.pt",foursquare:"http://www.foursquare.com",
-            zomato:"http://www.zomato.com/portugal", amazon:"http://www.amazon.com"});
+// var book2 = new Book("A jangada de pedra","A Jangada de Pedra é um romance de José Saramago. Conta a história ficcional da separação geográfica da Península Ibérica do restante continente europeu.","imgs/book2.jpeg",{wikipedia:"http://www.wikipedia.pt",foursquare:"http://www.foursquare.com",
+//             zomato:"http://www.zomato.com/portugal", amazon:"http://www.amazon.com"});
 
-var book3 = new Book("Código Da Vinci","The Da Vinci Code is a 2003 mystery-detective novel by Dan Brown.","imgs/book3.jpeg",{wikipedia:"http://www.wikipedia.pt",foursquare:"http://www.foursquare.com",
-            zomato:"http://www.zomato.com/portugal", amazon:"http://www.amazon.com"});
-
-
-library.addBook(book1);
-library.addBook(book2);
-library.addBook(book3);
+// var book3 = new Book("Código Da Vinci","The Da Vinci Code is a 2003 mystery-detective novel by Dan Brown.","imgs/book3.jpeg",{wikipedia:"http://www.wikipedia.pt",foursquare:"http://www.foursquare.com",
+//             zomato:"http://www.zomato.com/portugal", amazon:"http://www.amazon.com"});
 
 
+// library.addBook(book1);
+// library.addBook(book2);
+// library.addBook(book3);
 
-$('button.começar').click(function(){
+
+
+$('button#executa_pesquisa').click(function(){
     $startPage = $('.active');
     $startPage.removeClass('active');
+    var paramPesquisa = $("#pesquisa").val();
+    init(paramPesquisa);
     //library.nextBook();
-    book1.render();
-    library.books.dequeue();
-    library.booksViewed.enqueue(book1);
+    //book1.render();
+    //library.books.dequeue();
+    //library.booksViewed.enqueue(book1);
     $('#startOfPage').hide();
     $('.book:first-child').addClass('active');
     $('#buttonDislike').css("display","inline-block");
@@ -107,12 +110,12 @@ $('#buttonLike').click(function(){
 $('#buttonDislike').click(function(){
     
         if (library.books.data.length){
-            //library.books[library.index-1].dislikes++;
+            
             library.addDislikes();
             library.nextBook();
             
         } else {
-            //library.books[library.index-1].dislikes++;
+
             library.addDislikes();
             $('#mainPage').hide();
             $('#endOfPage').show();   
@@ -122,6 +125,45 @@ $('#buttonDislike').click(function(){
         }    
 });
 // Função de preenchimento da tabela final
+
+
+// function pesquisar(paramPesquisa){
+//     $.get("https://www.googleapis.com/books/v1/"+
+// "volumes?q="+encodeURI(paramPesquisa)).done(function(data){
+//     console.log(data);
+// }).fail(function(data){
+//     console.log("Error :"+data);
+// });
+// }
+
+// $("#executa_pesquisa").click(function(){
+//     var paramPesquisa=$("#pesquisa").val();
+//     pesquisar(paramPesquisa);
+// })
+
+
+
+function init(paramPesquisa){
+     //var paramPesquisa = "spiderman"; Se pretender alterar o número de resultados, altere o parâmetro maxResults
+     $.get("https://www.googleapis.com/books/v1/"+
+     "volumes?maxResults=10&q="+encodeURI(paramPesquisa)).done(function(data){
+     for (i=0; i<data.items.length; i++){
+        var JSONtitle = data.items[i].volumeInfo.title;
+        var JSONdescrip = data.items[i].volumeInfo.description;
+        var JSONimage = data.items[i].volumeInfo.imageLinks.thumbnail;
+        var JSONlink = data.items[i].volumeInfo.infoLink;
+        var googleBook = new Book(JSONtitle,JSONdescrip,JSONimage,JSONlink);
+        library.addBook(googleBook)};
+
+        library.nextBook();
+     }).fail(function(data){
+        console.log("The books' loading process had an error:"+data);
+     });
+
+}
+
+//init();
+
 
 function completeTable(){
 
