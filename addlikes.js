@@ -78,10 +78,6 @@ $('button#executa_pesquisa').click(function(){
     $startPage.removeClass('active');
     var paramPesquisa = $("#pesquisa").val();
     init(paramPesquisa);
-    //library.nextBook();
-    //book1.render();
-    //library.books.dequeue();
-    //library.booksViewed.enqueue(book1);
     $('#startOfPage').hide();
     $('.book:first-child').addClass('active');
     $('#buttonDislike').css("display","inline-block");
@@ -93,11 +89,9 @@ $('button#executa_pesquisa').click(function(){
 $('#buttonLike').click(function(){
        
         if (library.books.data.length){
-            //library.books[library.index-1].likes++;
             library.addLikes();
             library.nextBook();
         } else {
-            //library.books[library.index-1].likes++;
             library.addLikes();
             $('#mainPage').hide();
             $('#endOfPage').show();   
@@ -148,10 +142,10 @@ function init(paramPesquisa){
      $.get("https://www.googleapis.com/books/v1/"+
      "volumes?maxResults=10&q="+encodeURI(paramPesquisa)).done(function(data){
      for (i=0; i<data.items.length; i++){
-        var JSONtitle = data.items[i].volumeInfo.title;
-        var JSONdescrip = data.items[i].volumeInfo.description;
-        var JSONimage = data.items[i].volumeInfo.imageLinks.thumbnail;
-        var JSONlink = data.items[i].volumeInfo.infoLink;
+        var JSONtitle = data.items[i].volumeInfo.title != null ? data.items[i].volumeInfo.title : "Title";
+        var JSONdescrip = data.items[i].volumeInfo.description != null ? data.items[i].volumeInfo.description : "Description";
+        var JSONimage = data.items[i].volumeInfo.imageLinks != null ? data.items[i].volumeInfo.imageLinks.thumbnail : "Image"; 
+        var JSONlink = data.items[i].volumeInfo.infoLink != null ? data.items[i].volumeInfo.infoLink : "Link Not Available";
         var googleBook = new Book(JSONtitle,JSONdescrip,JSONimage,JSONlink);
         library.addBook(googleBook)};
 
@@ -202,3 +196,10 @@ var dislikes = 0;
     $("#LikesID2").text(likes);
     $("#DislikesID").text(dislikes);
 }
+
+$body = $("body");
+
+$(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+     ajaxStop: function() { $body.removeClass("loading"); }    
+});
